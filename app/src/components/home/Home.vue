@@ -8,6 +8,11 @@
         <apic-pannel :title="photo.titulo">
           <div slot="img">
             <apic-responsive-img :url="photo.url" :title="photo.titulo" />
+            <apic-button btype="button"
+                         text="REMOVER"
+                         :confirmation="true"
+                         bstyle="danger"
+                         @activatedButton="removePhoto($event, photo)" />
           </div>
         </apic-pannel>
       </li>
@@ -17,8 +22,9 @@
 
 <script>
 
-import Pannel from '../shared/pannel/Pannel.vue'
-import ResponsiveImg from '../shared/img-responsive/ResponsiveImg.vue'
+import Pannel from '../shared/pannel/Pannel.vue';
+import ResponsiveImg from '../shared/img-responsive/ResponsiveImg.vue';
+import Button from '../shared/button/Button.vue';
 
 export default {
 
@@ -28,7 +34,8 @@ export default {
    */
   components: {
     'apic-pannel': Pannel,
-    'apic-responsive-img': ResponsiveImg
+    'apic-responsive-img': ResponsiveImg,
+    'apic-button': Button
   },
   
   /**
@@ -54,12 +61,27 @@ export default {
   /**
    * Component methods
    * @method sortProperty
+   * @method removePhoto
    */
   methods: {
+
+    /**
+     * Sort property and return if goes before (-1), after (1) or is equal (0)
+     * @param {String} prop
+     */
     sortProperty(prop) {
       return(a,b) => {
         return a[prop].localeCompare(b[prop]);
       }
+    },
+
+    /**
+     * Call to remove photo from API
+     * @param {Object} $event (params from event broadcast)
+     * @param {Object} photo
+     */
+    removePhoto($event, photo) {
+      alert('Foto ' + photo.titulo + ' foi removida com sucesso em ' + $event + '!');
     }
   },
 
