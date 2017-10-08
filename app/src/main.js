@@ -5,6 +5,8 @@ import VueRouter from 'vue-router';
 import { routes } from './routes';
 import App from './App.vue';
 
+import './directives/TransformGlobal';
+
 Vue.use(VueResource);
 Vue.use(VueRouter);
 

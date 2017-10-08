@@ -7,7 +7,10 @@
       <li v-for="photo of sortedPhotos" :key="photo.key" class="item">
         <apic-pannel :title="photo.titulo">
           <div slot="img">
-            <apic-responsive-img :url="photo.url" :title="photo.titulo" />
+            <!-- <apic-responsive-img v-apic-transform="{ increment: 15, animate: true }" :url="photo.url" :title="photo.titulo" /> -->
+            <!-- Argument rotate with modifiers animate and reverse -->
+            <!-- <apic-responsive-img v-apic-transform:rotate.animate.reverse="15" :url="photo.url" :title="photo.titulo" /> -->
+            <apic-responsive-img v-apic-transform:scale.animate="1.1" :url="photo.url" :title="photo.titulo" />
             <apic-button btype="button"
                          text="REMOVER"
                          :confirmation="true"
@@ -22,9 +25,13 @@
 
 <script>
 
+// Components
 import Pannel from '../shared/pannel/Pannel.vue';
 import ResponsiveImg from '../shared/img-responsive/ResponsiveImg.vue';
 import Button from '../shared/button/Button.vue';
+
+// Directives
+import Transform from '../../directives/Transform';
 
 export default {
 
@@ -36,6 +43,14 @@ export default {
     'apic-pannel': Pannel,
     'apic-responsive-img': ResponsiveImg,
     'apic-button': Button
+  },
+
+  /**
+   * Associated directives within Home page
+   * @type Object
+   */
+  directives: {
+    'apic-transform': Transform
   },
   
   /**

@@ -53,6 +53,10 @@ export default {
     padding: 10px;
     text-transform: uppercase;
   }
+  
+  .pannel-content {
+    overflow: hidden;
+  }
 
   .pannel-fade-enter, .pannel-fade-leave-active {
     opacity: 0;
