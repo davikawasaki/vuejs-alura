@@ -11,7 +11,20 @@
 
 <script>
 export default {
-  props: ['title'],
+  /**
+   * Directive variables binded with each types and required for Pannel component
+   * @type Object
+   */
+  props: {
+    title: {
+        type: String,
+        required: true
+    }
+  },
+
+  /**
+   * Binded variables
+   */
   data() {
     return {
       visible: true

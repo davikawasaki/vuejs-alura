@@ -1,108 +1,52 @@
 <template>
   <section class="body">
-    <!--<h1>{{ title }}</h1>-->
-    <h1 v-text="title" class="center"></h1>
-    <input type="search" class="filter" @input="filter = $event.target.value" placeholder="Filtre pelo título">
-    <ul class="list">
-      <li v-for="photo of sortedPhotos" :key="photo.key" class="item">
-        <apic-pannel :title="photo.titulo">
-          <div slot="img">
-            <responsive-img :url="photo.url" :title="photo.titulo" />
-          </div>
-        </apic-pannel>
-      </li>
-    </ul>
+    <apic-menu :routes="routes" />
+    <transition name="page">
+      <router-view></router-view>
+    </transition>
   </section>
 </template>
 
 <script>
 
-import Pannel from './components/shared/pannel/Pannel.vue'
-import ResponsiveImg from './components/shared/img-responsive/ResponsiveImg.vue'
+import { routes } from './routes';
+import Menu from './components/shared/menu/Menu.vue';
 
 export default {
 
+  /**
+   * Associated components within App page
+   * @type Object
+   */
   components: {
-    'apic-pannel': Pannel,
-    'responsive-img': ResponsiveImg
+      'apic-menu': Menu
   },
-  
+
   /**
    * Binded variables
    */
   data() {
     return {
-      title: 'Alura Pic with VueJS',
-      photos: [],
-      filter: ''
-    }
-  },
-
-  /**
-   * Created lifecycle to get photos list
-   */
-  created() {
-    this.$http.get('http://localhost:3000/v1/fotos')
-      .then(res => res.json())
-      .then(photos => this.photos = photos, err => console.log(err));
-  },
-
-  /**
-   * Component methods
-   * @method sortProperty
-   */
-  methods: {
-    sortProperty(prop) {
-      return(a,b) => {
-        return a[prop].localeCompare(b[prop])
-      }
-    }
-  },
-
-  /**
-   * Computed methods to change data
-   * @method sortedPhotos
-   */
-  computed: {
-    sortedPhotos() {
-
-      let photos = this.photos;
-
-      // Filtering data according to filter input
-      if(this.filter) {
-        let exp = new RegExp(this.filter.trim(), 'i')
-        photos = this.photos.filter(photo => exp.test(photo.titulo));
-      }
-
-      return Object.keys(photos)
-        .map(p => {
-          this.$set(photos[p], 'key', p)
-          return photos[p]
-        })
-        .sort(this.sortProperty('titulo'))
+      routes
     }
   }
+
 }
+
 </script>
 
 <style lang="scss">
-  /* Main */ 
   .body {
     font-family: Helvetica, sans-serif;
     width: 96%;
     margin: 0 auto;
   }
-  .center {
-    text-align: center;
+
+  .page-enter, .page-leave-active {
+    opacity: 0;
   }
-  .list {
-    list-style: none;    
-  }
-  .list .item {
-    display: inline;
-  }
-  .filter {
-    display: block;
-    width: 100%;
+
+  .page-enter-active, .page-leave-active {
+    transition: opacity .4s;
   }
 </style>

@@ -4,7 +4,20 @@
 
 <script>
 export default {
-    props: ['title', 'url']
+    /**
+     * Directive variables binded with each types and required for ResponsiveImg component
+     * @type Object
+     */
+    props: {
+        title: {
+            type: String,
+            required: false
+        },
+        url: {
+            type: String,
+            required: true
+        }
+    }
 }
 </script>
 
