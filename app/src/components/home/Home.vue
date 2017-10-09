@@ -5,12 +5,12 @@
     <input type="search" class="filter" @input="filter = $event.target.value" placeholder="Filtre pelo título">
     <ul class="list">
       <li v-for="photo of sortedPhotos" :key="photo.key" class="item">
-        <apic-pannel :title="photo.titulo">
+        <apic-pannel :title="photo.title">
           <div slot="img">
-            <!-- <apic-responsive-img v-apic-transform="{ increment: 15, animate: true }" :url="photo.url" :title="photo.titulo" /> -->
+            <!-- <apic-responsive-img v-apic-transform="{ increment: 15, animate: true }" :url="photo.url" :title="photo.title" /> -->
             <!-- Argument rotate with modifiers animate and reverse -->
-            <!-- <apic-responsive-img v-apic-transform:rotate.animate.reverse="15" :url="photo.url" :title="photo.titulo" /> -->
-            <apic-responsive-img v-apic-transform:scale.animate="1.1" :url="photo.url" :title="photo.titulo" />
+            <!-- <apic-responsive-img v-apic-transform:rotate.animate.reverse="15" :url="photo.url" :title="photo.title" /> -->
+            <apic-responsive-img v-apic-transform:scale.animate="1.1" :url="photo.url" :title="photo.title" />
             <apic-button btype="button"
                          text="REMOVER"
                          :confirmation="true"
@@ -96,7 +96,7 @@ export default {
      * @param {Object} photo
      */
     removePhoto($event, photo) {
-      alert('Foto ' + photo.titulo + ' foi removida com sucesso em ' + $event + '!');
+      alert('Foto ' + photo.title + ' foi removida com sucesso em ' + $event + '!');
     }
   },
 
@@ -112,7 +112,7 @@ export default {
       // Filtering data according to filter input
       if(this.filter) {
         let exp = new RegExp(this.filter.trim(), 'i');
-        photos = this.photos.filter(photo => exp.test(photo.titulo));
+        photos = this.photos.filter(photo => exp.test(photo.title));
       }
 
       return Object.keys(photos)
@@ -120,7 +120,7 @@ export default {
           this.$set(photos[p], 'key', p)
           return photos[p]
         })
-        .sort(this.sortProperty('titulo'));
+        .sort(this.sortProperty('title'));
     }
   }
 }
