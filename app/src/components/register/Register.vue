@@ -1,11 +1,13 @@
 <template>
 
   <div>
-    <h1 class="center">Cadastro</h1>
-    <h2 class="center"></h2>
+    <h1 v-if="!photo._id" class="center">Cadastro - Nova foto</h1>
+    <h1 v-else class="center">Cadastro - Alterando foto</h1>
+
+    <p v-show="message" class="center message">{{ message }}</p>
 
     <!-- Canceling default behavior of submit element -->
-    <form @submit.prevent="savePhoto()">
+    <form @submit.prevent="save()">
       <div class="control">
         <label for="title">TÍTULO</label>
         <input id="title" autocomplete="off" v-model.lazy="photo.title">
@@ -55,24 +57,38 @@ export default {
 
   data() {
       return {
-          photo: new Photo()
+          photo: new Photo(),
+          id: this.$route.params.id,
+          message: ''
       }
   },
 
   created() {
     this.service = new PhotoService(this.$resource);
 
+    // Check if it's a photo update
+    if(this.id) {
+      this.service
+        .search(this.id)
+        .then(photo => this.photo = photo, err => this.message = err.message);
+    }
+
     // Ajax Request with $resource
     // this.resource = this.$resource('v1/fotos');
   },
 
   methods: {
-      savePhoto() {
+      save() {
 
         // Ajax Request with Photo exclusive service register method
         this.service
           .register(this.photo)
-          .then(() => this.photo = new Photo(), err => console.log(err));
+          .then(() => {
+            // After updating photo
+            if(this.id) this.$router.push({ name: 'home' });
+            // After creating new photo
+            this.photo = new Photo();
+          }, err => this.message = err.message);
 
         // Ajax Request with $resource
         // this.resource
@@ -109,6 +125,10 @@ export default {
     border-radius: 5px;
     border: 1px solid #ccc;
     padding: .5em;
+  }
+  p.message {
+    color: firebrick;
+    font-weight: bold;
   }
 
 </style>

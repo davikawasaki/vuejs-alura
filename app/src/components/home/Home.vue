@@ -2,7 +2,7 @@
   <div>
     <!--<h1>{{ title }}</h1>-->
     <h1 v-text="title" class="center"></h1>
-    <p v-show="message" class="center">{{ message }}</p>
+    <p v-show="message" class="center message">{{ message }}</p>
     <input type="search" class="filter" @input="filter = $event.target.value" placeholder="Filtre pelo título">
     <ul class="list">
       <li v-for="photo of sortedPhotos" :key="photo.key" class="item">
@@ -12,6 +12,9 @@
             <!-- Argument rotate with modifiers animate and reverse -->
             <!-- <apic-responsive-img v-apic-transform:rotate.animate.reverse="15" :url="photo.url" :title="photo.title" /> -->
             <apic-responsive-img v-apic-transform:scale.animate="1.1" :url="photo.url" :title="photo.title" />
+            <router-link :to="{ name: 'update', params: { id: photo._id } }">
+              <apic-button btype="button" text="ALTERAR" />
+            </router-link>
             <apic-button btype="button"
                          text="REMOVER"
                          :confirmation="true"
@@ -79,7 +82,7 @@ export default {
     // Ajax Request with Photo exclusive service list method
     this.service
       .list()
-      .then(photos => this.photos = photos, err => console.log(err));
+      .then(photos => this.photos = photos, err => this.message = err.message );
     
     // Ajax Request with $resource
     // this.resource = this.$resource('v1/fotos{/id}');
@@ -124,11 +127,7 @@ export default {
             let index = this.photos.indexOf(photo);
             this.photos.splice(index, 1);
             this.message = 'Foto removida com sucesso!';
-          }, err => {
-            console.log(err);
-            this.message = 'Não foi possível remover a foto!';
-          }
-        );
+          }, err => this.message = err.message );
 
       // Ajax Request with $resource
       // this.resource
@@ -198,5 +197,9 @@ export default {
   .filter {
     display: block;
     width: 100%;
+  }
+  p.message {
+    color: firebrick;
+    font-weight: bold;
   }
 </style>
