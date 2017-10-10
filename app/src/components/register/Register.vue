@@ -25,7 +25,7 @@
       </div>
 
       <div class="center">
-        <router-link to="/"><apic-button text="VOLTAR" btype="button"/></router-link>
+        <router-link :to="{ name: 'home' }"><apic-button text="VOLTAR" btype="button"/></router-link>
         <apic-button text="GRAVAR" btype="submit"/>
       </div>
 
@@ -38,6 +38,9 @@
 // Components
 import ResponsiveImg from '../shared/img-responsive/ResponsiveImg.vue'
 import Button from '../shared/button/Button.vue';
+
+// Services
+import PhotoService from '../../domain/photo/PhotoService';
 
 // Classes
 import Photo from '../../domain/photo/Photo';
@@ -56,11 +59,30 @@ export default {
       }
   },
 
+  created() {
+    this.service = new PhotoService(this.$resource);
+
+    // Ajax Request with $resource
+    // this.resource = this.$resource('v1/fotos');
+  },
+
   methods: {
       savePhoto() {
-          this.$http
-            .post('http://localhost:3000/v1/fotos', this.photo)
-            .then(() => this.photo = new Photo(), err => console.log(err));
+
+        // Ajax Request with Photo exclusive service register method
+        this.service
+          .register(this.photo)
+          .then(() => this.photo = new Photo(), err => console.log(err));
+
+        // Ajax Request with $resource
+        // this.resource
+        //   .save(this.photo)
+        //   .then(() => this.photo = new Photo(), err => console.log(err));
+
+        // Ajax Request with $http
+        // this.$http
+        //   .post('v1/fotos', this.photo)
+        //   .then(() => this.photo = new Photo(), err => console.log(err));
       }
   }
 

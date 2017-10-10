@@ -2,6 +2,7 @@
   <div>
     <!--<h1>{{ title }}</h1>-->
     <h1 v-text="title" class="center"></h1>
+    <p v-show="message" class="center">{{ message }}</p>
     <input type="search" class="filter" @input="filter = $event.target.value" placeholder="Filtre pelo título">
     <ul class="list">
       <li v-for="photo of sortedPhotos" :key="photo.key" class="item">
@@ -33,6 +34,9 @@ import Button from '../shared/button/Button.vue';
 // Directives
 import Transform from '../../directives/Transform';
 
+// Services
+import PhotoService from '../../domain/photo/PhotoService';
+
 export default {
 
   /**
@@ -60,7 +64,8 @@ export default {
     return {
       title: 'Alura Pic with VueJS',
       photos: [],
-      filter: ''
+      filter: '',
+      message: ''
     }
   },
 
@@ -68,9 +73,24 @@ export default {
    * Created lifecycle to get photos list
    */
   created() {
-    this.$http.get('http://localhost:3000/v1/fotos')
-      .then(res => res.json())
+
+    this.service = new PhotoService(this.$resource);
+    
+    // Ajax Request with Photo exclusive service list method
+    this.service
+      .list()
       .then(photos => this.photos = photos, err => console.log(err));
+    
+    // Ajax Request with $resource
+    // this.resource = this.$resource('v1/fotos{/id}');
+    // this.resource.query()
+    //   .then(res => res.json())
+    //   .then(photos => this.photos = photos, err => console.log(err));
+
+    // Ajax Request with $http
+    // this.$http.get('v1/fotos')
+    //   .then(res => res.json())
+    //   .then(photos => this.photos = photos, err => console.log(err));
   },
 
   /**
@@ -96,7 +116,46 @@ export default {
      * @param {Object} photo
      */
     removePhoto($event, photo) {
-      alert('Foto ' + photo.title + ' foi removida com sucesso em ' + $event + '!');
+
+      // Ajax Request with Photo exclusive service delete method
+      this.service
+        .delete(photo._id)
+        .then(() => {
+            let index = this.photos.indexOf(photo);
+            this.photos.splice(index, 1);
+            this.message = 'Foto removida com sucesso!';
+          }, err => {
+            console.log(err);
+            this.message = 'Não foi possível remover a foto!';
+          }
+        );
+
+      // Ajax Request with $resource
+      // this.resource
+      //   .delete({ id: photo._id })
+      //   .then(() => {
+      //       let index = this.photos.indexOf(photo);
+      //       this.photos.splice(index, 1);
+      //       this.message = 'Foto removida com sucesso!';
+      //     }, err => {
+      //       console.log(err);
+      //       this.message = 'Não foi possível remover a foto!';
+      //     }
+      //   );
+
+      // Ajax Request with $http
+      // this.$http
+      //   .delete(`v1/fotos/${photo._id}`)
+      //   .then(() => {
+      //       let index = this.photos.indexOf(photo);
+      //       this.photos.splice(index, 1);
+
+      //       this.message = 'Foto removida com sucesso!';
+      //     }, err => {
+      //       console.log(err);
+      //       this.message = 'Não foi possível remover a foto!';
+      //     }
+      //   );
     }
   },
 
