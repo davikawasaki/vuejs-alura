@@ -9,14 +9,17 @@
     <!-- Canceling default behavior of submit element -->
     <form @submit.prevent="save()">
       <div class="control">
-        <label for="title">TÍTULO</label>
-        <input id="title" autocomplete="off" v-model.lazy="photo.title">
+        <label for="title">TÍTULO *</label>
+        <input v-validate data-vv-rules="required|min:3|max:30" data-vv-as="título"
+               name="title" id="title" autocomplete="off" v-model.lazy="photo.title">
+        <p v-show="errors.has('title')" class="error">{{ errors.first('title') }}</p>
       </div>
 
       <div class="control">
-        <label for="url">URL</label>
+        <label for="url">URL *</label>
         <!-- Lazy modifier only goes from view to model when input focus is off -->
-        <input id="url" autocomplete="off" v-model.lazy="photo.url">
+        <input v-validate data-vv-rules="required" name="url" id="url" autocomplete="off" v-model.lazy="photo.url">
+        <p v-show="errors.has('url')" class="error">{{ errors.first('url') }}</p>
         <apic-responsive-img v-show="photo.url" :url="photo.url" :title="photo.title"/>
       </div>
 
@@ -79,16 +82,22 @@ export default {
 
   methods: {
       save() {
-
-        // Ajax Request with Photo exclusive service register method
-        this.service
-          .register(this.photo)
-          .then(() => {
-            // After updating photo
-            if(this.id) this.$router.push({ name: 'home' });
-            // After creating new photo
-            this.photo = new Photo();
-          }, err => this.message = err.message);
+        // Check input fields validation before saving/updating
+        this.$validator
+          .validateAll()
+          .then(success => {
+            if(success) {
+              // Ajax Request with Photo exclusive service register method
+              this.service
+                .register(this.photo)
+                .then(() => {
+                  // After updating photo
+                  if(this.id) this.$router.push({ name: 'home' });
+                  // After creating new photo
+                  this.photo = new Photo();
+                }, err => this.message = err.message);  
+            } else this.message = "Preencha os campos obrigatórios para prosseguir!";
+          })
 
         // Ajax Request with $resource
         // this.resource
@@ -126,7 +135,7 @@ export default {
     border: 1px solid #ccc;
     padding: .5em;
   }
-  p.message {
+  p.message, p.error {
     color: firebrick;
     font-weight: bold;
   }
