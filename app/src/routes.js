@@ -1,4 +1,8 @@
-import Register from './components/register/Register.vue';
+// Normal module import
+// import Register from './components/register/Register.vue';
+
+// Dynamic module import with lazy loading
+const Register = () => System.import('./components/register/Register.vue');
 import Home from './components/home/Home.vue';
 
 export const routes = [
