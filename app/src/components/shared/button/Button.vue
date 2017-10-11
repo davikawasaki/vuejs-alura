@@ -66,19 +66,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-    .button {
-        display: inline-block;
-        padding: 10px;
-        border-radius: .5em;
-        border: none;
-        margin: 10px;
-        font-size: 1.2em;
-        background: darkcyan;
-        color: white;
-    }
-    .button.button-danger {
-        background: firebrick;
-        color: white;
-    }
+<style lang="sass" scoped>
+    @import './Button.scss';
 </style>

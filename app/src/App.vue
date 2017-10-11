@@ -35,18 +35,6 @@ export default {
 
 </script>
 
-<style lang="scss">
-  .body {
-    font-family: Helvetica, sans-serif;
-    width: 96%;
-    margin: 0 auto;
-  }
-
-  .page-enter, .page-leave-active {
-    opacity: 0;
-  }
-
-  .page-enter-active, .page-leave-active {
-    transition: opacity .4s;
-  }
+<style lang="sass" scoped>
+  @import './App.scss';
 </style>

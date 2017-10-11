@@ -114,30 +114,6 @@ export default {
 }
 
 </script>
-<style lang="scss" scoped>
-
-  .center {
-    text-align: center;
-  }
-  .control {
-    font-size: 1.2em;
-    margin-bottom: 20px;
-  }
-  .control label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: .5em;
-  }
- .control label + input, .control textarea {
-    width: 95%;
-    font-size: inherit;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    padding: .5em;
-  }
-  p.message, p.error {
-    color: firebrick;
-    font-weight: bold;
-  }
-
+<style lang="sass" scoped>
+  @import './Register.scss';
 </style>

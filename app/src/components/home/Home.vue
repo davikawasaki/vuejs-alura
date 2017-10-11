@@ -184,22 +184,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
-  .center {
-    text-align: center;
-  }
-  .list {
-    list-style: none;    
-  }
-  .list .item {
-    display: inline;
-  }
-  .filter {
-    display: block;
-    width: 100%;
-  }
-  p.message {
-    color: firebrick;
-    font-weight: bold;
-  }
+<style lang="sass" scoped>
+  @import './Home.scss';
 </style>

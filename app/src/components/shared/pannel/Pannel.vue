@@ -33,36 +33,6 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-  /* Pannel */ 
-  .pannel {
-    padding: 0 auto;
-    border: solid 2px grey;
-    display: inline-block;
-    margin: 5px;
-    width: 200px;
-    height: 100%;
-    vertical-align: top;
-    text-align: center;
-  }
-
-  .pannel .pannel-title {
-    text-align: center;
-    margin: 0 0 15px 0;
-    background-color: #ccc;
-    padding: 10px;
-    text-transform: uppercase;
-  }
-  
-  .pannel-content {
-    overflow: hidden;
-  }
-
-  .pannel-fade-enter, .pannel-fade-leave-active {
-    opacity: 0;
-  }
-
-  .pannel-fade-enter-active, .pannel-fade-leave-active {
-    transition: opacity .4s;
-  }
+<style lang="sass" scoped>
+  @import './Pannel.scss';
 </style>

@@ -21,9 +21,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-    .img-responsive {
-        width: 100%;
-    }
+<style lang="sass" scoped>
+    @import './ResponsiveImg.scss';
 </style>
 
